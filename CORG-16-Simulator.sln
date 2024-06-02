@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CORG-16-Simulator", "CORG-16-Simulator\CORG-16-Simulator.csproj", "{70157CC5-F1D6-481C-A930-F02CE987B2BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70157CC5-F1D6-481C-A930-F02CE987B2BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70157CC5-F1D6-481C-A930-F02CE987B2BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70157CC5-F1D6-481C-A930-F02CE987B2BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70157CC5-F1D6-481C-A930-F02CE987B2BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB00AA16-30E5-4212-BD15-BE1CEED1F73F}
+	EndGlobalSection
+EndGlobal
