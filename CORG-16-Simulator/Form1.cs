@@ -37,7 +37,9 @@ namespace CORG_16_Simulator
         //*** MEMORY STEP STEP ÇALIŞTIRMA FUNC
         public void StepDataMemory(int index)
         {
-            code = richTextBox1.Lines;
+            // lineNumberRTB1 nesnesinin içindeki RichTextBox'a erişim
+            RichTextBox richTextBox = lineNumberRTB1.RichTextBox;
+            code = richTextBox.Lines;
             var exec = executer.ExecuteLineForDataMemory(code[index], new Processor(), _dataMemoryAddresses, dataMemoryCounter, datamemoryLine);
             dataMemoryCounter = exec.Item1;
             datamemoryLine = exec.Item2;
@@ -48,7 +50,9 @@ namespace CORG_16_Simulator
         //*** INSTRUCTION MEMORY STEP STEP ÇALIŞTIRMA FUNC
         public void Step(int index)
         {
-            var richtextInstruction = richTextBox1.Lines.Where(x => !x.Contains(".")).ToArray();
+            // lineNumberRTB1 nesnesinin içindeki RichTextBox'a erişim
+            RichTextBox richTextBox = lineNumberRTB1.RichTextBox;
+            var richtextInstruction = richTextBox.Lines.Where(x => !x.Contains(".")).ToArray();
 
             code = richtextInstruction;
             pc = executer.ExecuteLineByLine(code[_instructionMemoryAddresses.Where(x => x.Index == index).FirstOrDefault().Index], new Processor(), _registers, _instructionMemoryAddresses, _dataMemoryAddresses, pc, _lohi);
@@ -62,6 +66,12 @@ namespace CORG_16_Simulator
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //--------------------------------------------------------------------------------
+            lineNumberRTB1.RichTextBox.BackColor = ColorTranslator.FromHtml("#222E33");
+            lineNumberRTB1.RichTextBox.ForeColor = Color.White;
+            lineNumberRTB1.RichTextBox.BorderStyle = BorderStyle.None;
+            lineNumberRTB1.BorderStyle = BorderStyle.None;
+
             AddRegisterAtStartUp();
             AddAddressAtStartUp();
         }
@@ -167,7 +177,9 @@ namespace CORG_16_Simulator
         //*** RUN BUTTON
         private void button3_Click_1(object sender, EventArgs e)
         {
-            var richtextInstruction = richTextBox1.Lines.Where(x => !x.Contains(".")).ToList();
+            // lineNumberRTB1 nesnesinin içindeki RichTextBox'a erişim
+            RichTextBox richTextBox = lineNumberRTB1.RichTextBox;
+            var richtextInstruction = richTextBox.Lines.Where(x => !x.Contains(".")).ToList();
 
             if (!richtextInstruction.Any())
             {
@@ -191,16 +203,14 @@ namespace CORG_16_Simulator
                     _instructionMemoryAddresses[i].Value = 0;
                     string[] rows = { _instructionMemoryAddresses[i].Index.ToString() };
 
-                    listView4.Items.Add(new ListViewItem(rows));
-
                 }
 
             }
 
-            for (int i = 0; i < richTextBox1.Lines.Length; i++)
+            for (int i = 0; i < richTextBox.Lines.Length; i++)
             {
 
-                if (richTextBox1.Lines[i].Contains("."))
+                if (richTextBox.Lines[i].Contains("."))
 
                     StepDataMemory(datamemoryLine);
 
@@ -219,7 +229,7 @@ namespace CORG_16_Simulator
 
 
 
-            var richtextDataMemory = richTextBox1.Lines.Where(x => x.Contains(".word")).ToList();
+            var richtextDataMemory = richTextBox.Lines.Where(x => x.Contains(".word")).ToList();
 
             for (int i = 0; i < richtextDataMemory.Count; i++)
             {
@@ -268,7 +278,9 @@ namespace CORG_16_Simulator
 
             List<string> richtextInstruction = new List<string>();
 
-            richtextInstruction = richTextBox1.Lines.Where(x => !x.Contains(".")).ToList();
+            // lineNumberRTB1 nesnesinin içindeki RichTextBox'a erişim
+            RichTextBox richTextBox = lineNumberRTB1.RichTextBox;
+            richtextInstruction = richTextBox.Lines.Where(x => !x.Contains(".")).ToList();
 
             if (!richtextInstruction.Any())
             {
@@ -310,17 +322,16 @@ namespace CORG_16_Simulator
                         if (buttonClickCount == 1)
                         {
                             string[] rows = { _instructionMemoryAddresses[i].Index.ToString() };
-                            listView4.Items.Add(new ListViewItem(rows));
                         }
                     }
                 }
 
 
 
-                for (int i = 0; i < richTextBox1.Lines.Length; i++)
+                for (int i = 0; i < richTextBox.Lines.Length; i++)
                 {
 
-                    if (richTextBox1.Lines[i].Contains("."))
+                    if (richTextBox.Lines[i].Contains("."))
 
                         StepDataMemory(datamemoryLine);
 
@@ -345,25 +356,6 @@ namespace CORG_16_Simulator
 
             string valueToFind2 = (_instructionMemoryAddresses.Where(y => y.Name == (pc) * 4).FirstOrDefault().Index).ToString();
 
-
-
-            foreach (ListViewItem item in listView4.Items)
-            {
-
-                if (item.SubItems[0].Text == (Convert.ToInt32(valueToFind) / 4).ToString())
-                {
-
-                    item.BackColor = Color.Red;
-
-                }
-                else
-                {
-
-                    item.BackColor = Color.White;
-
-                }
-
-            }
 
             foreach (ListViewItem item in listView2.Items)
             {
@@ -395,7 +387,9 @@ namespace CORG_16_Simulator
             listView3.Visible = true;
             listView2.Visible = true;
 
-            richTextBox1.Clear();
+            // lineNumberRTB1 nesnesinin içindeki RichTextBox'a erişim
+            RichTextBox richTextBox = lineNumberRTB1.RichTextBox;
+            richTextBox.Clear();
         }
 
         private void Restart()
@@ -408,7 +402,6 @@ namespace CORG_16_Simulator
             _listArrayDataMemory.Clear();
             _instructionMemoryAddresses.ForEach(x => { x.Value = 0; x.Label = null; });
             _lohi.ForEach(x => x.Value = 0);
-            listView4.Items.Clear();
 
 
             UpdateRegisterListView();
@@ -420,8 +413,7 @@ namespace CORG_16_Simulator
             label3.Text = "HI: 0";
         }
 
-
-        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedBase = comboBox1.SelectedItem.ToString();
 
@@ -649,6 +641,7 @@ namespace CORG_16_Simulator
 
             }
         }
+     
 
 
         private void ConvertValuesToBase(string baseType)
@@ -726,16 +719,18 @@ namespace CORG_16_Simulator
 
         private void HighlightCurrentInstruction(int pc)
         {
+            // lineNumberRTB1 nesnesinin içindeki RichTextBox'a erişim
+            RichTextBox richTextBox = lineNumberRTB1.RichTextBox;
             int lineIndex = _instructionMemoryAddresses.Where(x => x.Name == pc * 4).FirstOrDefault().Index;
-            int start = richTextBox1.GetFirstCharIndexFromLine(lineIndex);
-            int length = richTextBox1.Lines[lineIndex].Length;
+            int start = richTextBox.GetFirstCharIndexFromLine(lineIndex);
+            int length = richTextBox.Lines[lineIndex].Length;
 
-            richTextBox1.SelectAll();
-            richTextBox1.SelectionBackColor = Color.White;
+            richTextBox.SelectAll();
+            richTextBox.SelectionBackColor = Color.White;
 
-            richTextBox1.Select(start, length);
-            richTextBox1.SelectionBackColor = Color.Yellow; // Çalıştırılan talimatın arka plan rengini sarı yap
-            richTextBox1.DeselectAll();
+            richTextBox.Select(start, length);
+            richTextBox.SelectionBackColor = Color.Yellow; // Çalıştırılan talimatın arka plan rengini sarı yap
+            richTextBox.DeselectAll();
         }
 
     }
