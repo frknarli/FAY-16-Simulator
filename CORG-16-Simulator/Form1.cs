@@ -66,7 +66,6 @@ namespace CORG_16_Simulator
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //--------------------------------------------------------------------------------
             lineNumberRTB1.RichTextBox.BackColor = ColorTranslator.FromHtml("#222E33");
             lineNumberRTB1.RichTextBox.ForeColor = Color.White;
             lineNumberRTB1.RichTextBox.BorderStyle = BorderStyle.None;
@@ -201,7 +200,6 @@ namespace CORG_16_Simulator
                     _instructionMemoryAddresses[i].Label = richtextInstruction[i].Split(' ')[0].Replace(":", "");
 
                     _instructionMemoryAddresses[i].Value = 0;
-                    string[] rows = { _instructionMemoryAddresses[i].Index.ToString() };
 
                 }
 
@@ -318,11 +316,6 @@ namespace CORG_16_Simulator
                         _instructionMemoryAddresses[i].Label = richtextInstruction[i].Split(' ')[0].Replace(":", "");
                         _instructionMemoryAddresses[i].Value = 0;
 
-                        // Eğer butona ilk kez basıldıysa listView4'ü güncelle
-                        if (buttonClickCount == 1)
-                        {
-                            string[] rows = { _instructionMemoryAddresses[i].Index.ToString() };
-                        }
                     }
                 }
 
@@ -349,12 +342,10 @@ namespace CORG_16_Simulator
             if (_instructionMemoryAddresses.Where(x => x.Name == (pc) * 4).FirstOrDefault().Label == null)// son satıra geldiğinde step butonu pasif hale getir
             {
                 button2.Enabled = false;
-                return;
             }
 
-            string valueToFind = (_instructionMemoryAddresses.Where(y => y.Name == (pc) * 4).FirstOrDefault().Name).ToString();
 
-            string valueToFind2 = (_instructionMemoryAddresses.Where(y => y.Name == (pc) * 4).FirstOrDefault().Index).ToString();
+            string valueToFind = (_instructionMemoryAddresses.Where(y => y.Name == (pc) * 4).FirstOrDefault().Name).ToString();
 
 
             foreach (ListViewItem item in listView2.Items)
@@ -363,7 +354,7 @@ namespace CORG_16_Simulator
                 if (item.SubItems[0].Text == valueToFind)
                 {
 
-                    item.BackColor = Color.Red;
+                    item.BackColor = ColorTranslator.FromHtml("#7092A0");
 
                     break;
 
@@ -387,9 +378,8 @@ namespace CORG_16_Simulator
             listView3.Visible = true;
             listView2.Visible = true;
 
-            // lineNumberRTB1 nesnesinin içindeki RichTextBox'a erişim
-            RichTextBox richTextBox = lineNumberRTB1.RichTextBox;
-            richTextBox.Clear();
+            //RichTextBox richTextBox = lineNumberRTB1.RichTextBox;
+            //richTextBox.Clear();
         }
 
         private void Restart()
@@ -400,7 +390,7 @@ namespace CORG_16_Simulator
             _registers.ForEach(x => x.Value = 0);
             _dataMemoryAddresses.ForEach(x => x.Value = 0);
             _listArrayDataMemory.Clear();
-            _instructionMemoryAddresses.ForEach(x => { x.Value = 0; x.Label = null; });
+            _instructionMemoryAddresses.ForEach(x => { x.Value = 0; x.Label = null; x.Index = 0; });
             _lohi.ForEach(x => x.Value = 0);
 
 
@@ -411,6 +401,10 @@ namespace CORG_16_Simulator
             label1.Text = "PC: 0";
             label2.Text = "LO: 0";
             label3.Text = "HI: 0";
+
+            RichTextBox richTextBox = lineNumberRTB1.RichTextBox;
+            richTextBox.SelectAll();
+            richTextBox.SelectionBackColor = System.Drawing.ColorTranslator.FromHtml("#222E33");
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -726,10 +720,11 @@ namespace CORG_16_Simulator
             int length = richTextBox.Lines[lineIndex].Length;
 
             richTextBox.SelectAll();
-            richTextBox.SelectionBackColor = Color.White;
+            richTextBox.SelectionBackColor = ColorTranslator.FromHtml("#222E33");
 
             richTextBox.Select(start, length);
-            richTextBox.SelectionBackColor = Color.Yellow; // Çalıştırılan talimatın arka plan rengini sarı yap
+            richTextBox.SelectionBackColor = ColorTranslator.FromHtml("#7092A0");
+            richTextBox.Focus();
             richTextBox.DeselectAll();
         }
 

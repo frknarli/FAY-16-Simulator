@@ -137,7 +137,7 @@ namespace CORG_16_Simulator
         #region Functions
         private void UpdateBackBuffer()
         {
-            if (this.Width > 0)
+            if (this.Width > 0 && this.Height > 0 && this.Visible)
             {
                 _bufferContext.MaximumBuffer = new Size(this.Width + 1, this.Height + 1);
                 _bufferedGraphics = _bufferContext.Allocate(this.CreateGraphics(), this.ClientRectangle);
