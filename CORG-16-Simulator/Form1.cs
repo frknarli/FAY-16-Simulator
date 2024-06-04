@@ -338,6 +338,7 @@ namespace CORG_16_Simulator
             if (_instructionMemoryAddresses.Where(x => x.Name == (pc) * 4).FirstOrDefault().Label == null)// son satıra geldiğinde step butonu pasif hale getir
             {
                 button2.Enabled = false;
+                return;
             }
 
             string valueToFind = (_instructionMemoryAddresses.Where(y => y.Name == (pc) * 4).FirstOrDefault().Name).ToString();
@@ -377,7 +378,10 @@ namespace CORG_16_Simulator
                 }
 
             }
-            //comboBox1.Text = "Decimal";
+
+            HighlightCurrentInstruction(pc);
+
+            comboBox1.Text = "Decimal";
         }
 
         private void button4_Click(object sender, EventArgs e) //Restart button
@@ -423,6 +427,8 @@ namespace CORG_16_Simulator
 
             if (selectedBase == "Hexadecimal")
             {
+                ConvertValuesToBase("Hexadecimal");
+
                 // Convert Decimal or Binary to Hexadecimal
                 foreach (ListViewItem item in listView1.Items)
                 {
@@ -499,6 +505,8 @@ namespace CORG_16_Simulator
             }
             else if (selectedBase == "Binary")
             {
+                ConvertValuesToBase("Binary");
+
                 // Convert Decimal or Hexadecimal to Binary
                 foreach (ListViewItem item in listView1.Items)
                 {
@@ -575,6 +583,8 @@ namespace CORG_16_Simulator
             }
             else if (selectedBase == "Decimal")
             {
+                ConvertValuesToBase("Decimal");
+
                 // Convert Binary or Hexadecimal to Decimal
                 foreach (ListViewItem item in listView1.Items)
                 {
@@ -638,6 +648,94 @@ namespace CORG_16_Simulator
                 }
 
             }
+        }
+
+
+        private void ConvertValuesToBase(string baseType)
+        {
+            string label1Value = ConvertLabelsToBase(label1.Text.Split(' ')[1], baseType);
+            string label2Value = ConvertLabelsToBase(label2.Text.Split(' ')[1], baseType);
+            string label3Value = ConvertLabelsToBase(label3.Text.Split(' ')[1], baseType);
+            label1.Text = "PC: " + label1Value;
+            label2.Text = "LO: " + label2Value;
+            label3.Text = "HI: " + label3Value;
+        }
+
+
+        private string ConvertLabelsToBase(string value, string baseType)
+        {
+            if (baseType == "Decimal")
+            {
+                // Convert Binary or Hexadecimal to Decimal
+                if (value.StartsWith("0x"))
+                {
+                    return Convert.ToSByte(value.Substring(2), 16).ToString();
+                }
+                else if (value.All(c => c == '0' || c == '1'))
+                {
+                    return Convert.ToSByte(value, 2).ToString();
+                }
+            }
+            else if (baseType == "Binary")
+            {
+                // Convert Decimal or Hexadecimal to Binary
+                if (value.StartsWith("0x"))
+                {
+                    return ConvertToBinary(Convert.ToSByte(value.Substring(2), 16), 8);
+                }
+                else
+                {
+                    return ConvertToBinary(Convert.ToSByte(value), 8);
+                }
+            }
+            else if (baseType == "Hexadecimal")
+            {
+                // Convert Decimal or Binary to Hexadecimal
+                if (value.All(c => c == '0' || c == '1'))
+                {
+                    return "0x" + Convert.ToSByte(value, 2).ToString("X2");
+                }
+                else
+                {
+                    return "0x" + Convert.ToSByte(value).ToString("X2");
+                }
+            }
+
+            return value;
+        }
+
+
+        private string ConvertToBinary(sbyte value, int bits)
+        {
+            // İki'nin tamamlayanı (two's complement) ile 8-bit binary formatında dönüşüm
+            var binary = Convert.ToString(value, 2);
+
+            // Eğer binary string 8 bit'ten kısa ise, sola doğru sıfırlarla tamamla
+            if (binary.Length < bits)
+            {
+                binary = binary.PadLeft(bits, '0');
+            }
+            // Eğer binary string 8 bit'ten uzun ise, son 8 biti al
+            else if (binary.Length > bits)
+            {
+                binary = binary.Substring(binary.Length - bits);
+            }
+
+            return binary;
+        }
+
+        private void HighlightCurrentInstruction(int pc)
+        {
+            int lineIndex = _instructionMemoryAddresses.Where(x => x.Name == pc * 4).FirstOrDefault().Index;
+            int start = richTextBox1.GetFirstCharIndexFromLine(lineIndex);
+            int length = richTextBox1.Lines[lineIndex].Length;
+
+            richTextBox1.SelectAll();
+            richTextBox1.SelectionBackColor = Color.White;
+
+            richTextBox1.Select(start, length);
+            richTextBox1.SelectionBackColor = Color.Yellow; // Çalıştırılan talimatın arka plan rengini sarı yap
+            richTextBox1.DeselectAll();
         }
 
     }
