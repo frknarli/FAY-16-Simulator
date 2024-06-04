@@ -59,10 +59,19 @@
     <Compile Include="Hardware\Register.cs" />
     <Compile Include="InstructionFields\FuncCode.cs" />
     <Compile Include="InstructionFields\OpCode.cs" />
+    <Compile Include="LineNumberRTB.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LineNumberRTB.Designer.cs">
+      <DependentUpon>LineNumberRTB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LineNumberRTB.resx">
+      <DependentUpon>LineNumberRTB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
