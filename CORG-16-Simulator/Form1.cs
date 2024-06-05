@@ -59,7 +59,7 @@ namespace CORG_16_Simulator
             UpdateRegisterListView();
             UpdateInstructionMemoryListView();
             UpdateDataMemoryListView();
-            label1.Text = "PC: " + (pc * 4).ToString();
+            label1.Text = "PC: " + (pc * 2).ToString();
             label2.Text = "LO: " + executer._processor.GetLo(_lohi);
             label3.Text = "HI: " + executer._processor.GetHi(_lohi);
         }
@@ -77,7 +77,7 @@ namespace CORG_16_Simulator
 
         private void AddAddressAtStartUp()
         {
-            for (int i = 0; i < 256; i = i + 4)
+            for (int i = 0; i < 256; i = i + 2)
             {
                 _instructionMemoryAddresses.Add(new Address() { Name = i, Value = 0, Index = 0 });
                 _dataMemoryAddresses.Add(new Address() { Name = i, Value = 0, Index = 0 });
@@ -217,11 +217,11 @@ namespace CORG_16_Simulator
             do
             {
 
-                if (!richtextInstruction[_instructionMemoryAddresses.Where(y => y.Name == pc * 4).FirstOrDefault().Index].Contains("."))
+                if (!richtextInstruction[_instructionMemoryAddresses.Where(y => y.Name == pc * 2).FirstOrDefault().Index].Contains("."))
 
                     Step(pc);
 
-            } while (_instructionMemoryAddresses.Where(x => x.Name == pc * 4).FirstOrDefault().Label != null);
+            } while (_instructionMemoryAddresses.Where(x => x.Name == pc * 2).FirstOrDefault().Label != null);
 
 
 
@@ -334,18 +334,18 @@ namespace CORG_16_Simulator
 
 
 
-            if (!richtextInstruction[_instructionMemoryAddresses.Where(y => y.Name == pc * 4).FirstOrDefault().Index].Contains("."))
+            if (!richtextInstruction[_instructionMemoryAddresses.Where(y => y.Name == pc * 2).FirstOrDefault().Index].Contains("."))
             {
                 Step(pc);
             }
 
-            if (_instructionMemoryAddresses.Where(x => x.Name == (pc) * 4).FirstOrDefault().Label == null)// son satıra geldiğinde step butonu pasif hale getir
+            if (_instructionMemoryAddresses.Where(x => x.Name == (pc) * 2).FirstOrDefault().Label == null)// son satıra geldiğinde step butonu pasif hale getir
             {
                 button2.Enabled = false;
             }
 
 
-            string valueToFind = (_instructionMemoryAddresses.Where(y => y.Name == (pc) * 4).FirstOrDefault().Name).ToString();
+            string valueToFind = (_instructionMemoryAddresses.Where(y => y.Name == (pc) * 2).FirstOrDefault().Name).ToString();
 
 
             foreach (ListViewItem item in listView2.Items)
@@ -715,7 +715,7 @@ namespace CORG_16_Simulator
         {
             // lineNumberRTB1 nesnesinin içindeki RichTextBox'a erişim
             RichTextBox richTextBox = lineNumberRTB1.RichTextBox;
-            int lineIndex = _instructionMemoryAddresses.Where(x => x.Name == pc * 4).FirstOrDefault().Index;
+            int lineIndex = _instructionMemoryAddresses.Where(x => x.Name == pc * 2).FirstOrDefault().Index;
             int start = richTextBox.GetFirstCharIndexFromLine(lineIndex);
             int length = richTextBox.Lines[lineIndex].Length;
 

@@ -47,14 +47,14 @@ namespace CORG_16_Simulator
 
                     foreach (var item in data)
                     {
-                        _processor.SetDataMemory(dataMemoryCounter * 4, Convert.ToInt16(item), _dataMemoryAddresses);
+                        _processor.SetDataMemory(dataMemoryCounter * 2, Convert.ToInt16(item), _dataMemoryAddresses);
                         dataMemoryCounter++;
                     }
                     dataMemoryLine++;
                 }
                 else
                 {
-                    _processor.SetDataMemory(dataMemoryCounter * 4, Convert.ToInt16(line.Split(' ')[2].Replace(".word ", "")), _dataMemoryAddresses);
+                    _processor.SetDataMemory(dataMemoryCounter * 2, Convert.ToInt16(line.Split(' ')[2].Replace(".word ", "")), _dataMemoryAddresses);
                     dataMemoryCounter++;
                     dataMemoryLine++;
                 }
@@ -143,8 +143,8 @@ namespace CORG_16_Simulator
                     break;
 
                 case "jr":
-                    pc = (byte)(_processor.GetRegister("ra", _registers) / 4);
-                    _processor.SetInstructionMemory(_pc * 4, SetInstructionMemoryForJR(OpCode.Jr, FuncCode.Jr), _instructionMemoryAddresses);
+                    pc = (byte)(_processor.GetRegister("ra", _registers) / 2);
+                    _processor.SetInstructionMemory(_pc * 2, SetInstructionMemoryForJR(OpCode.Jr, FuncCode.Jr), _instructionMemoryAddresses);
                     break;
 
                 case "slt":
@@ -166,7 +166,7 @@ namespace CORG_16_Simulator
                     val3 = _processor.GetRegister(src2, _registers);
                     try
                     {
-                        if (val2 + val3 > 252)
+                        if (val2 + val3 > 254)
                         {
                             MessageBox.Show("You have gone beyond the boundaries of memory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -183,7 +183,7 @@ namespace CORG_16_Simulator
                         MessageBox.Show("You have gone beyond the boundaries of memory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
-                    _processor.SetInstructionMemory(_pc * 4, SetInstructionMemoryForSw(OpCode.Sw), _instructionMemoryAddresses);
+                    _processor.SetInstructionMemory(_pc * 2, SetInstructionMemoryForSw(OpCode.Sw), _instructionMemoryAddresses);
                     pc++;
                     break;
 
@@ -197,13 +197,13 @@ namespace CORG_16_Simulator
 
                     if (val1 == val2)
                     {
-                        _processor.SetInstructionMemory(pc * 4, SetInstructionMemoryForBranch(OpCode.Beq), _instructionMemoryAddresses);
+                        _processor.SetInstructionMemory(pc * 2, SetInstructionMemoryForBranch(OpCode.Beq), _instructionMemoryAddresses);
                         pc = _instructionMemoryAddresses.Where(x => x.Label == dest).FirstOrDefault().Index;
 
                     }
                     else
                     {
-                        _processor.SetInstructionMemory(pc * 4, SetInstructionMemoryForBranch(OpCode.Beq), _instructionMemoryAddresses);
+                        _processor.SetInstructionMemory(pc * 2, SetInstructionMemoryForBranch(OpCode.Beq), _instructionMemoryAddresses);
                         pc++;
                     }
 
@@ -217,13 +217,13 @@ namespace CORG_16_Simulator
                     val2 = _processor.GetRegister(src2, _registers);
                     if (val1 != val2)
                     {
-                        _processor.SetInstructionMemory(pc * 4, SetInstructionMemoryForBranch(OpCode.Bne), _instructionMemoryAddresses);
+                        _processor.SetInstructionMemory(pc * 2, SetInstructionMemoryForBranch(OpCode.Bne), _instructionMemoryAddresses);
                         pc = _instructionMemoryAddresses.Where(x => x.Label == dest).FirstOrDefault().Index;
 
                     }
                     else
                     {
-                        _processor.SetInstructionMemory(pc * 4, SetInstructionMemoryForBranch(OpCode.Bne), _instructionMemoryAddresses);
+                        _processor.SetInstructionMemory(pc * 2, SetInstructionMemoryForBranch(OpCode.Bne), _instructionMemoryAddresses);
                         pc++;
                     }
 
@@ -268,7 +268,7 @@ namespace CORG_16_Simulator
                     dest = line.Split(' ')[1].Replace("$", "");
                     var hi = _processor.GetHi(_lohi);
                     _processor.SetRegister(dest, hi, _registers);
-                    _processor.SetInstructionMemory(_pc * 4, SetInstructionMemoryForMfhi(OpCode.Mfhi, OpCode.Mfhi), _instructionMemoryAddresses);
+                    _processor.SetInstructionMemory(_pc * 2, SetInstructionMemoryForMfhi(OpCode.Mfhi, OpCode.Mfhi), _instructionMemoryAddresses);
                     pc++;
                     break;
 
@@ -276,19 +276,19 @@ namespace CORG_16_Simulator
                     dest = line.Split(' ')[1].Replace("$", "");
                     var lo = _processor.GetLo(_lohi);
                     _processor.SetRegister(dest, lo, _registers);
-                    _processor.SetInstructionMemory(_pc * 4, SetInstructionMemoryForMfhi(OpCode.Mfhi, OpCode.Mflo), _instructionMemoryAddresses);
+                    _processor.SetInstructionMemory(_pc * 2, SetInstructionMemoryForMfhi(OpCode.Mfhi, OpCode.Mflo), _instructionMemoryAddresses);
                     pc++;
                     break;
 
                 case "j":
                     pc = _instructionMemoryAddresses.Where(x => x.Label == line.Split(' ')[1]).FirstOrDefault().Index;
-                    _processor.SetInstructionMemory(_pc * 4, SetInstructionMemoryJType(OpCode.J, line), _instructionMemoryAddresses);
+                    _processor.SetInstructionMemory(_pc * 2, SetInstructionMemoryJType(OpCode.J, line), _instructionMemoryAddresses);
                     break;
 
                 case "jal":
                     pc = _instructionMemoryAddresses.Where(x => x.Label == line.Split(' ')[1]).FirstOrDefault().Index;
-                    _processor.SetInstructionMemory(_pc * 4, SetInstructionMemoryJType(OpCode.Jal, line), _instructionMemoryAddresses);
-                    _processor.SetRegister("ra", (sbyte)((_pc + 1) * 4), _registers);
+                    _processor.SetInstructionMemory(_pc * 2, SetInstructionMemoryJType(OpCode.Jal, line), _instructionMemoryAddresses);
+                    _processor.SetRegister("ra", (sbyte)((_pc + 1) * 2), _registers);
                     break;
 
 
@@ -311,7 +311,7 @@ namespace CORG_16_Simulator
                 //        string firstValue = multResult64.Substring(0, multResult64.Length - 32);
                 //        _processor.SetHi(Convert.ToInt32(firstValue, 2), _lohi);
                 //    }
-                //    _processor.SetInstructionMemory(pc * 4, SetInstructionMemoryRType(OpCode.Mul, FuncCode.Mul), _instructionMemoryAddresses);
+                //    _processor.SetInstructionMemory(pc * 2, SetInstructionMemoryRType(OpCode.Mul, FuncCode.Mul), _instructionMemoryAddresses);
                 //    pc++;
                 //    break;
 
@@ -331,7 +331,7 @@ namespace CORG_16_Simulator
             val1 = Convert.ToInt16(src1, 16);
 
             _processor.SetRegister(dest, (sbyte)val1, _registers);
-            _processor.SetInstructionMemory(_pc * 4, SetInstructionMemoryForLui(OpCode.Lui), _instructionMemoryAddresses);
+            _processor.SetInstructionMemory(_pc * 2, SetInstructionMemoryForLui(OpCode.Lui), _instructionMemoryAddresses);
         }
 
         private void ExecuteLoadWord(string line)
@@ -344,7 +344,7 @@ namespace CORG_16_Simulator
 
             try
             {
-                if (val2 + val3 > 252)
+                if (val2 + val3 > 254)
                 {
                     MessageBox.Show("You have gone beyond the boundaries of memory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -358,7 +358,7 @@ namespace CORG_16_Simulator
 
                 MessageBox.Show("You have gone beyond the boundaries of memory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            _processor.SetInstructionMemory(_pc * 4, SetInstructionMemoryForLw(OpCode.Lw), _instructionMemoryAddresses);
+            _processor.SetInstructionMemory(_pc * 2, SetInstructionMemoryForLw(OpCode.Lw), _instructionMemoryAddresses);
         }
 
         public void ExecuteLine(string line, int type, string ope, string opCode, string funcCode) //type 0 I, type 1 R
@@ -432,7 +432,7 @@ namespace CORG_16_Simulator
             }
 
             _processor.SetRegister(dest, result, _registers);
-            _processor.SetInstructionMemory(_pc * 4, type == 0 ? SetInstructionMemoryForIType(opCode) : SetInstructionMemoryRType(opCode, funcCode), _instructionMemoryAddresses);
+            _processor.SetInstructionMemory(_pc * 2, type == 0 ? SetInstructionMemoryForIType(opCode) : SetInstructionMemoryRType(opCode, funcCode), _instructionMemoryAddresses);
         }
 
         public delegate int MathOperation(int a, int b);
@@ -634,7 +634,7 @@ namespace CORG_16_Simulator
         {
             string opc = opCode;
             dest = line.Split(' ')[1];
-            string address = Convert.ToString(Convert.ToInt16(_instructionMemoryAddresses.Where(x => x.Label == dest).FirstOrDefault().Index * 4), 2).PadLeft(12, '0');
+            string address = Convert.ToString(Convert.ToInt16(_instructionMemoryAddresses.Where(x => x.Label == dest).FirstOrDefault().Index * 2), 2).PadLeft(12, '0');
             string instruction = opc + address;
             string hex = Convert.ToInt16(instruction, 2).ToString("X");
             return Convert.ToInt16(hex, 16);
