@@ -1,6 +1,6 @@
-# CORG-16-Simulator
+# FAY-16-Simulator
 
-CORG-16-Simulator is a Windows Forms application that simulates a 16-bit processor architecture. It provides a visual interface for executing and debugging assembly code while monitoring registers, instruction memory, and data memory in real-time.
+FAY-16-Simulator is a Windows Forms application that simulates a 16-bit FAY processor architecture. It provides a visual interface for executing and debugging assembly code while monitoring registers, instruction memory, and data memory in real-time.
 
 
 ![IDE](https://github.com/user-attachments/assets/f354159c-7fcd-47c4-916f-d852b9d15594)
